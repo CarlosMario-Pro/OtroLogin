@@ -11,6 +11,8 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const app = express();
 const User = require("./user");
+console.log("me conteeeeeeee")
+console.log("variables de entorno" ,MONGO_URL,FRONT_URL,SECRET_SESSION)
 //----------------------------------------- END OF IMPORTS---------------------------------------------------
 mongoose.connect(
   MONGO_URL,
@@ -29,9 +31,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: FRONT_URL, // <-- location of the react app were connecting to
+    methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
 );
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", FRONT_URL);
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
+
 app.use(
   session({
     secret: SECRET_SESSION,
