@@ -14,8 +14,13 @@ const User = require("./user");
 console.log("me conteeeeeeee")
 console.log("variables de entorno" ,MONGO_URL,FRONT_URL,SECRET_SESSION)
 //----------------------------------------- END OF IMPORTS---------------------------------------------------
+const MongoStore = require('connect-mongo')(session);
 
-const connection = mongoose.connect(
+const sessionStore = new MongoStore({
+  mongooseConnection: mongoose.connection,
+  collection: 'sessions'
+});
+mongoose.connect(
   MONGO_URL,
   {
     useNewUrlParser: true,
@@ -53,6 +58,7 @@ app.use(
     secret: SECRET_SESSION,
     resave: true,
     saveUninitialized: true,
+    store: sessionStore
   })
 );
 app.use(cookieParser(SECRET_SESSION));
