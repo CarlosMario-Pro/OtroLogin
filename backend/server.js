@@ -14,7 +14,8 @@ const User = require("./user");
 console.log("me conteeeeeeee")
 console.log("variables de entorno" ,MONGO_URL,FRONT_URL,SECRET_SESSION)
 //----------------------------------------- END OF IMPORTS---------------------------------------------------
-mongoose.connect(
+
+const connection = mongoose.connect(
   MONGO_URL,
   {
     useNewUrlParser: true,
@@ -125,6 +126,8 @@ app.post('/logout', (req, res) => {
 
 //----------------------------------------- END OF ROUTES---------------------------------------------------
 //Start Server
-app.listen(4000, () => {
-  console.log("Server Has Started");
-});
+const PORT = process.env.PORT || 4000
+  
+    app.listen(PORT, () => {
+      console.log(`Server is listening on PORT: ${PORT}`);
+    });
